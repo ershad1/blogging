@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item text-center">
+                <a class="nav-link active btl" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Login</a>
+            </li>
+            <li class="nav-item text-center">
+                <a class="nav-link btr" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Signup</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="form px-4 pt-5">
+
+                    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+                        <div class="input-group mb-3">
+                            <input #usernameInput="ngModel" class="form-control" name="username" ngModel placeholder="Username" required type="text"/>
+                            <div *ngIf="usernameInput.invalid && usernameInput.touched" class="invalid-feedback">Please enter a username</div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input #passwordInput="ngModel" class="form-control" name="password" ngModel placeholder="Password" required type="password"/>
+                            <div *ngIf="passwordInput.invalid && passwordInput.touched" class="invalid-feedback">Please enter a password.</div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button [disabled]="loginForm.invalid" class="btn btn-primary" type="submit">Log in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="form px-4">
+                    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)" class="form-signin">
+                        <div class="input-group mb-3">
+                            <input #nameInput="ngModel" class="form-control" name="name" ngModel placeholder="Name" required type="text">
+                            <span *ngIf="nameInput.invalid && nameInput.touched" class="help-block">Please enter your full name.</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input #usernameInput="ngModel" class="form-control" name="username" ngModel placeholder="Username" required type="text">
+                            <span *ngIf="usernameInput.invalid && usernameInput.touched" class="help-block">Please enter a
+                    username.</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input #passwordInput="ngModel" class="form-control" name="password" ngModel placeholder="password" required type="text">
+                            <span *ngIf="passwordInput.invalid && passwordInput.touched" class="help-block">Please enter a password.</span>
+                        </div>
+
+                        <input hidden type="text" name="role" value="USER" class="form-control" placeholder="Email or Phone">
+
+                        <div class="input-group mb-3">
+                            <button [disabled]="registerForm.invalid" class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
