@@ -47,8 +47,6 @@ public class JwtAuthentication extends UsernamePasswordAuthenticationFilter {
 			throw new RuntimeException("Unable to convert Json into Java Object: " + e);
 		}
 
-        AppUser appUser1 =  appUserRepository.findByUsername(appUser.getUsername());
-
 		return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				appUser.getUsername(),
 				appUser.getPassword()));
