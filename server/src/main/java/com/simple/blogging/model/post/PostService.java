@@ -36,7 +36,7 @@ public class PostService {
 		return postRepository.findAll();
 	}
     public List<Post> activePostList() {
-        return postRepository.findActivePostList();
+        return postRepository.findAllByIsActiveTrue();
     }
 
 	public Post getPostById(Long id) {

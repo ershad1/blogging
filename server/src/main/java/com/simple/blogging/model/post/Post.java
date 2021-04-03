@@ -36,12 +36,12 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_post_app_user_id"))
-    @JsonIgnore
+//    @JsonIgnore
     private AppUser appUser;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.EAGER)
-    private List<LikedPost> likePosts;
+    private List<LikedPost> likedPosts;
 }

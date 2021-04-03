@@ -33,7 +33,6 @@
                     </div>
                 </div>
 
-                <img *ngIf="post?.id > 0" alt="Card image cap" class="card-img-top" src="{{ postHost }}/{{ post?.id }}.png"/>
                 <div class="card-body">
                     <a (click)="likePost(post, user)" [ngStyle]="{ color: like === 'Unlike' ? '#18BC9C' : '#000000' }" class="card-link"
                        style="cursor:pointer;">{{ post?.likes }}<i class="fa fa-gittip"></i></a>

@@ -4,18 +4,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
+@RepositoryRestResource(excerptProjection = FlatPost.class)
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p FROM Post p order by p.postedDate DESC")
+    @Query("SELECT p FROM Post p join fetch p.appUser order by p.postedDate DESC")
     public List<Post> findAll();
 
-    @Query("SELECT p FROM Post p WHERE p.appUser.id=:userId order by p.postedDate DESC")
+    @Query("SELECT p FROM Post p join fetch p.appUser WHERE p.appUser.id=:userId order by p.postedDate DESC")
     public List<Post> findPostByAppUserId(@Param("userId") Long userId);
 
-    @Query("SELECT p FROM Post p WHERE p.id=:x")
+    @Query("SELECT p FROM Post p join fetch p.appUser WHERE p.id=:x")
     public Post findPostById(@Param("x") Long id);
 
     @Modifying
@@ -23,6 +25,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     public void deletePostById(@Param("x") Long id);
 
 
-    @Query("SELECT p FROM Post p WHERE p.isActive=true order by p.postedDate DESC")
+    @Query("SELECT p FROM Post p join fetch p.appUser WHERE p.isActive=true order by p.postedDate DESC")
     public List<Post> findActivePostList();
+
+    public List<Post> findAllByIsActiveTrue();
 }
