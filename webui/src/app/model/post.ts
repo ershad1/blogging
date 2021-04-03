@@ -1,13 +1,14 @@
 import {Comment} from './comment';
+import {User} from './user';
 
 export class Post {
   public id: number;
-  public name: string;
-  public caption: string;
+  public isActive: boolean;
+  public content: string;
   public postedDate: Date;
-  public username: string;
-  public location: string;
   public likes: number;
-  public userImageId: number;
   public commentList: Comment[];
+  public appUser: User;
 }
+
+

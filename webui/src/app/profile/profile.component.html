@@ -42,11 +42,28 @@
         </div>
         <div class="tab-pane fade" id="posts">
             <div class="row">
-                <div *ngFor="let post of user?.post" class="col-lg-4 col-sm-6 portfolio-item">
-                    <div class="card">
-                        <a (click)="seeOnePost(post?.id)" style="cursor:pointer;"><img alt="" class="card-img-top" src="{{ postHost }}/{{ post?.name }}.png"/></a>
-                    </div>
-                </div>
+                <table>
+                    <thead>
+                    <th>Id</th>
+                    <th>Content</th>
+                    <th>Is Active</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let post of posts">
+                        <td>{{post.id}}</td>
+                        <td>{{post.content}}</td>
+                        <td *ngIf="post.isActive">Active</td>
+                        <td *ngIf="!post.isActive">Not Active</td>
+                        <td *ngIf="!post.isActive">
+                            <button (click)="activatePost(post.id)" class="btn btn-primary" type="button">Activate</button>
+                        </td>
+                        <td *ngIf="post.isActive">
+                            <button (click)="deactivatePost(post.id)" class="btn btn-primary" type="button">Deactivate</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -75,7 +92,7 @@
                 <div class="input-group mb-3">
                     <select #roleInput="ngModel" class="form-select" id="inputGroupSelect02" name="role" ngModel required>
                         <option value="USER">User</option>
-                        <option value="SUPER_ADMIN">Admin</option>
+                        <option value="ADMIN">Admin</option>
                     </select>
                     <label class="input-group-text" for="inputGroupSelect02">Options</label>
                     <span *ngIf="roleInput.invalid && roleInput.touched" class="help-block">Please select a role.</span>

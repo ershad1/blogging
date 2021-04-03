@@ -16,6 +16,7 @@ export class AccountService {
   public loggInUsername: string | null;
   public redirectUrl: string;
   private jwtHelper = new JwtHelperService();
+  public role: string;
 
   constructor(private http: HttpClient) {
   }
@@ -37,6 +38,8 @@ export class AccountService {
   saveToken(token: string): void {
     this.token = token;
     this.loggInUsername = this.jwtHelper.decodeToken(this.token).sub;
+    let roles = this.jwtHelper.decodeToken(this.token).roles;
+    this.role = roles[0]
     localStorage.setItem('token', token);
   }
 
@@ -46,6 +49,9 @@ export class AccountService {
 
   getToken(): string {
     return this.token;
+  }
+  getRole() {
+    return this.role;
   }
 
   isLoggedIn(): boolean {
@@ -71,6 +77,10 @@ export class AccountService {
     return this.http.get<Post[]>(`${this.host}/post/list`);
   }
 
+  getActivePosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.host}/post/activeList`);
+  }
+
   searchUsers(username: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/user/findByUsername/${username}`);
   }
@@ -89,6 +99,17 @@ export class AccountService {
   }
   deactivateUser(username: string) {
     return this.http.post(`${this.host}/user/deactivate`, {username}, {
+      responseType: 'text'
+    });
+  }
+
+  activatePost(id: number) {
+    return this.http.post(`${this.host}/post/activate`, {id}, {
+      responseType: 'text'
+    });
+  }
+  deactivatePost(id: number) {
+    return this.http.post(`${this.host}/post/deactivate`, {id}, {
       responseType: 'text'
     });
   }

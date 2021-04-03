@@ -29,7 +29,7 @@ public class RoleDataLoader implements CommandLineRunner {
     private void loadData() {
         List<Role> roles = new ArrayList<>();
 
-        roles.add(Role.builder().fullName("SUPER_ADMIN").build());
+        roles.add(Role.builder().fullName("ADMIN").build());
         roles.add(Role.builder().fullName("USER").build());
         roleRepository.saveAll(roles);
     }

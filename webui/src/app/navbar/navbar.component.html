@@ -13,7 +13,7 @@
                         <i class="fa fa-blog" style="font-size: 23px;"></i>
                     </a>
                 </li>
-                <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+                <li *ngIf="this.role=='ADMIN'" class="nav-item" style="display: inline-block;padding:0px 20px;">
                     <a (click)="getUserProfile(user?.username)" class="nav-link" style="cursor:pointer;">
                         <i class="fa fa-user" style="font-size: 23px;"></i></a>
                 </li>
@@ -37,12 +37,10 @@
 <ng-template #loggedOut>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/login" routerLinkActive="active" style="margin-right:15px;">Log In
-            </a>
+           You are not activated yet. Please wait until we verify you.
         </li>
-        <li class="nav-item">
-            <a class="nav-link" routerLink="/signup" routerLinkActive="active">Sign Up
-            </a>
+        <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+            <a (click)="logOut()" class="nav-link" style="cursor:pointer;"><i class="fa fa-sign-out-alt" style="font-size: 23px;"></i></a>
         </li>
     </ul>
 </ng-template>
@@ -89,7 +87,7 @@
                     <div class="modal-body">
                         <input [(ngModel)]="userName" class="form-control" name="username" placeholder="username" required type="hidden"/>
                         <div class="input-group mb-3">
-                            <textarea class="form-control" name="caption" ngModel placeholder="Post something.." required rows="3"></textarea>
+                            <textarea class="form-control" name="content" ngModel placeholder="Post something.." required rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -103,31 +101,3 @@
         </div>
     </div>
 </div>
-
-<!-- search modal -->
-<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="search" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <span aria-hidden="true" id="closeSearchModal" style="display: none;">&times;</span>
-            <div class="modal-body">
-                <p class="text-primary text-center">User Search</p>
-                <form #searchUsersForm="ngForm" class="form-signin">
-                    <div class="input-group mb-3">
-                        <input (ngModelChange)="onSearchUsers($event)" class="form-control" name="username" ngModel placeholder="Username..."
-                               required type="text"/>
-                    </div>
-                </form>
-            </div>
-            <div class="">
-                <p *ngIf="searchedUser?.length > 0" class="text-primary text-center">List Of Users Found</p>
-                <div *ngFor="let userSearch of searchedUser" class="list-group">
-                    <a (click)="getSearchUserProfile(userSearch?.username)" class="list-group-item list-group-item-action">
-                        <img alt="{{ userSearch?.fullName }}" class="rounded-circle" src="{{ userHost }}/{{ userSearch?.id }}.png" width="45"/>
-                        {{ userSearch.username }}
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-

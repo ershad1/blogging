@@ -44,7 +44,7 @@
                             <span *ngIf="passwordInput.invalid && passwordInput.touched" class="help-block">Please enter a password.</span>
                         </div>
 
-                        <input hidden type="text" name="role" value="USER" class="form-control" placeholder="Email or Phone">
+                        <input type="hidden" [ngModel]="'USER'" name="role" class="form-control">
 
                         <div class="input-group mb-3">
                             <button [disabled]="registerForm.invalid" class="btn btn-primary" type="submit">Submit</button>

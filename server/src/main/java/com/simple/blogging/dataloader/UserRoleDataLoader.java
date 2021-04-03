@@ -33,8 +33,8 @@ public class UserRoleDataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        AppUser superAdminUser = appUserRepository.findByUsername("ershad");
-        Role superAdminRole = roleRepository.findRoleByFullName("SUPER_ADMIN");
+        AppUser superAdminUser = appUserRepository.findByUsername("admin");
+        Role superAdminRole = roleRepository.findRoleByFullName("ADMIN");
         userRoleRepository.save(UserRole.builder().appUser(superAdminUser).role(superAdminRole).build());
     }
 }

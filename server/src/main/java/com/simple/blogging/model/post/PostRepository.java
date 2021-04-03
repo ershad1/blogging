@@ -21,4 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Modifying
     @Query("DELETE FROM Post WHERE id=:x")
     public void deletePostById(@Param("x") Long id);
+
+
+    @Query("SELECT p FROM Post p WHERE p.isActive=true order by p.postedDate DESC")
+    public List<Post> findActivePostList();
 }

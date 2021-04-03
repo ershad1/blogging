@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         response => {
           this.loadingService.isLoading.next(false);
           this.notificationService.notifySuccess(
-            'You have registered successfully. Please check your email for account details.',
+            'You have registered successfully.'
           );
           console.log(response);
         },

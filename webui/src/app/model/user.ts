@@ -8,7 +8,6 @@ export class User {
   username: string;
   email: string;
   password: string;
-  bio: string;
   post: Post[];
   likedPost: Post[];
 }

@@ -25,13 +25,22 @@ public class PostController {
 	@Autowired
 	private AppUserService appUserService;
 
-	@Autowired
+    @Autowired
+    private PostRepository postRepository;
+
+
+    @Autowired
     CommentService commentService;
 
 	@GetMapping("/list")
 	public List<Post> getPostList() {
 		return postService.postList();
 	}
+
+    @GetMapping("/activeList")
+    public List<Post> getActivePostList() {
+        return postService.activePostList();
+    }
 
 	@GetMapping("/getPostById/{postId}")
 	public Post getOnePostById(@PathVariable("postId") Long id) {
@@ -150,5 +159,22 @@ public class PostController {
 	private AppUser getAppUser(String username) {
 		return appUserService.findByUsername(username);
 	}
+
+    @PostMapping("/activate")
+    public ResponseEntity<String> activatePost(@RequestBody HashMap<String, Long> mapper) {
+        Long id = mapper.get("id");
+        Post post = postRepository.findPostById(id);
+        post.setIsActive(true);
+        postRepository.save(post);
+        return new ResponseEntity<String>("User Activated Successfully!", HttpStatus.OK);
+    }
+    @PostMapping("/deactivate")
+    public ResponseEntity<String> deactivatePost(@RequestBody HashMap<String, Long> mapper) {
+        Long id = mapper.get("id");
+        Post post = postRepository.findPostById(id);
+        post.setIsActive(false);
+        postRepository.save(post);
+        return new ResponseEntity<String>("User Deactivated Successfully!", HttpStatus.OK);
+    }
 
 }

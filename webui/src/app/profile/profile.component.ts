@@ -16,10 +16,11 @@ import {NotificationService} from '../service/notification.service';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   postId: number;
-  posts: Post = new Post();
   user: User;
   users: User[];
   host: string;
+  posts: Post[] = [];
+
   userHost: string;
   postHost: string;
   username: string;
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.getPosts();
     this.loadingService.isLoading.next(true);
     this.username = this.route.snapshot.paramMap.get('username');
     this.host = this.postService.host;
@@ -46,6 +48,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.getUserInfo(this.username);
     this.getUsers();
     this.loadingService.isLoading.next(false);
+  }
+
+  getPosts(): void {
+    this.subscriptions.push(this.accountService.getPosts().subscribe(
+      (response: Post[]) => {
+        this.posts = response;
+        console.log(this.posts);
+        this.loadingService.isLoading.next(false);
+      },
+      error => {
+        console.log(error);
+        this.loadingService.isLoading.next(false);
+      }
+    ));
   }
 
   getUserInfo(username: string): void {
@@ -226,5 +242,47 @@ export class ProfileComponent implements OnInit, OnDestroy {
         'Password change failed. Please try again.',
       );
     }
+  }
+
+  activatePost(id: number) {
+    this.loadingService.isLoading.next(true);
+    this.subscriptions.push(
+      this.accountService.activatePost(id).subscribe(
+        response => {
+          console.log(response);
+          this.loadingService.isLoading.next(false);
+          this.notificationService.notifySuccess('Activated successfully.',);
+          this.getPosts();
+        },
+        error => {
+          console.log(error);
+          this.loadingService.isLoading.next(false);
+          this.notificationService.notifyError(
+            'Activation Failed. Please try again..',
+          );
+        }
+      )
+    );
+  }
+
+  deactivatePost(id: number) {
+    this.loadingService.isLoading.next(true);
+    this.subscriptions.push(
+      this.accountService.deactivatePost(id).subscribe(
+        response => {
+          console.log(response);
+          this.loadingService.isLoading.next(false);
+          this.notificationService.notifySuccess('Deactivated successfully.',);
+          this.getPosts();
+        },
+        error => {
+          console.log(error);
+          this.loadingService.isLoading.next(false);
+          this.notificationService.notifyError(
+            'Deactivation Failed. Please try again..',
+          );
+        }
+      )
+    );
   }
 }

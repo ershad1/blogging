@@ -35,6 +35,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   postFail: boolean;
   posts: Post[] = [];
   private subscriptions: Subscription[] = [];
+  public role:string;
 
   constructor(
     private router: Router,
@@ -60,6 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.showNavbar = false;
       this.loadingService.isLoading.next(false);
     }
+    this.role = this.accountService.getRole();
   }
 
   getUserInfo(username: string): void {
@@ -69,6 +71,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.user = response;
           this.userLoggedIn = true;
           this.showNavbar = true;
+          if (!this.user.isActive) {
+            this.showNavbar = false;
+          }
         },
         error => {
           console.log(error);
@@ -122,7 +127,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         (response: Post) => {
           console.log(response);
           let postId: number = response.id;
-          this.savePicture(this.postPicture);
           this.loadingService.isLoading.next(false);
           this.newPostURL = `${this.clientHost}/post/${postId}`;
         },
@@ -130,24 +134,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           console.log(error);
           this.postFail = true;
           this.loadingService.isLoading.next(false);
-        }
-      )
-    );
-  }
-
-  savePicture(picture: File): void {
-    this.subscriptions.push(
-      this.postService.uploadPostPicture(picture).subscribe(
-        response => {
-          if (response.type === HttpEventType.UploadProgress) {
-            this.progress = (response.loaded / response.total) * 100;
-          } else {
-            console.log(response);
-            this.OnNewPostSuccess(8);
-          }
-        },
-        error => {
-          console.log(error);
         }
       )
     );

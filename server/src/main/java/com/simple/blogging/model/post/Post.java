@@ -29,7 +29,7 @@ public class Post {
     private String content;
 
     @Builder.Default
-    private Boolean isOk = false;
+    private Boolean isActive = false;
     @Lob
     @CreationTimestamp
     private Date postedDate;

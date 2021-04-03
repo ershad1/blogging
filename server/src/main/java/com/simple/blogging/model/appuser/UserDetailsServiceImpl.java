@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import com.simple.blogging.model.role.Role;
 import com.simple.blogging.model.userrole.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		Set<UserRole> userRoles = appUser.getUserRoles();
 		userRoles.forEach(userRole -> {
-			authorities.add(new SimpleGrantedAuthority(userRoles.toString()));
+		    Role role = userRole.getRole();
+			authorities.add(new SimpleGrantedAuthority(role.getFullName()));
 		});
 		return new User(appUser.getUsername(), appUser.getPassword(), authorities);
 	}

@@ -15,7 +15,7 @@ import {NotificationService} from '../service/notification.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   user = new User();
-  posts: Post[] = [];
+  activePosts: Post[] = [];
   host: string;
   userHost: string;
   postHost: string;
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadingService.isLoading.next(true);
     this.getUserInfo(this.accountService.loggInUsername);
-    this.getPosts();
+    this.getActivePosts();
     this.host = this.postService.host;
     this.userHost = this.postService.userHost;
     this.postHost = this.postService.postHost;
@@ -68,11 +68,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log(username);
   }
 
-  getPosts(): void {
-    this.subscriptions.push(this.accountService.getPosts().subscribe(
+
+  getActivePosts(): void {
+    this.subscriptions.push(this.accountService.getActivePosts().subscribe(
       (response: Post[]) => {
-        this.posts = response;
-        console.log(this.posts);
+        this.activePosts = response;
+        console.log(this.activePosts);
         this.loadingService.isLoading.next(false);
       },
       error => {
@@ -90,14 +91,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.notificationService.notifySuccess(
             'Post was deleted successfully.',
           );
-          this.getPosts();
+          this.getActivePosts();
         },
         error => {
           console.log(error);
           this.notificationService.notifyError(
             'Post was not deleted. Please try again.',
           );
-          this.getPosts();
+          this.getActivePosts();
         }
       ));
   }
