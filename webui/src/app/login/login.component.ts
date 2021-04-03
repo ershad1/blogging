@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           console.log(error);
           this.loadingService.isLoading.next(false);
           this.notificationService.notifyError(
-            'Username or password incorrect. Please try again.'
+            'Username or password incorrect or You are not activated yet.'
           );
         }
       )

@@ -49,9 +49,6 @@ public class JwtAuthentication extends UsernamePasswordAuthenticationFilter {
 
         AppUser appUser1 =  appUserRepository.findByUsername(appUser.getUsername());
 
-        if (!appUser1.getIsActive()) {
-            throw new RuntimeException("You are not activated yet. Please wait sometime until we verify you");
-        }
 		return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				appUser.getUsername(),
 				appUser.getPassword()));
