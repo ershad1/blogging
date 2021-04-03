@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+
+<!-- Page Content -->
+<div class="container">
+    <h1 class="mt-4 mb-3"></h1>
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <!-- Blog Post -->
+            <div *ngFor="let post of posts" class="card mb-4">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div (click)="getUserProfile(post.username)" class="ml-2" style="cursor: pointer">
+                                <div class="h5 m-0">{{ post.username }}</div>
+                                <div class="h7 text-muted">
+                                    {{ post.postedDate | date: "mediumDate" }}, near
+                                    {{ post.location }}
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div *ngIf="user.username == post.username" class="dropdown">
+                                <button aria-expanded="false" aria-haspopup="true" class="btn btn-link dropdown-toggle" data-toggle="dropdown"
+                                        id="gedf-drop1" type="button">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </button>
+                                <div aria-labelledby="gedf-drop1" class="dropdown-menu dropdown-menu-right">
+                                    <a (click)="onDelete(post?.id)" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img (click)="seeOnePost(post.id)" alt="Card image cap" class="card-img-top" src="{{ postHost }}/{{ post?.name }}.png"
+                     style="cursor:pointer;"/>
+                <div class="card-body">
+                    <h5 (click)="getUserProfile(post.username)" class="card-title" style="color:#18BC9C;cursor:pointer;">
+                        {{ post.username }}
+                    </h5>
+                    <p class="card-text">{{ post.caption }}</p>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <ul class="pagination justify-content-center mb-4">
+            </ul>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>

@@ -1,0 +1,14 @@
+/*@import "https://bootswatch.com/4/flatly/bootstrap.min.css";*/
+/*@import "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";*/
+@import "~angular-notifier/styles";
+body {
+    background-color: #f4f6f6;
+}
+
+a {
+    cursor: pointer;
+}
+
+.help-block{
+    color: red;
+}

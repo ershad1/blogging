@@ -1,0 +1,133 @@
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light static-top sticky-top">
+    <div class="container">
+
+        <div class="" id="navbarResponsive">
+            <ul *ngIf="showNavbar; else loggedOut" class="navbar-nav ml-auto">
+                <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+                    <a (click)="goHome()" class="nav-link" style="cursor:pointer;">
+                        <i class="fa fa-list" style="font-size: 23px;"></i></a>
+                <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+                    <a class="nav-link" data-bs-target="#newPost" data-bs-toggle="modal" style="cursor:pointer;">
+                        <i class="fa fa-blog" style="font-size: 23px;"></i>
+                    </a>
+                </li>
+                <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+                    <a (click)="getUserProfile(user?.username)" class="nav-link" style="cursor:pointer;">
+                        <i class="fa fa-user" style="font-size: 23px;"></i></a>
+                </li>
+                <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+                    <a (click)="logOut()" class="nav-link" style="cursor:pointer;"><i class="fa fa-sign-out-alt" style="font-size: 23px;"></i></a>
+                </li>
+                <li class="nav-item" style="display: inline-block;padding:0px 20px;">
+                    <div *ngIf="user?.id > 0" class="media col-md-10 col-lg-8 col-xl-7 p-0 my-4 mx-auto">
+                        <div class="media-body ml-5">
+                            <h4 class="font-weight-bold ">{{ user?.fullName }}</h4>
+                            <h6 class="">{{ user?.username }}</h6>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- logout template -->
+<ng-template #loggedOut>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active" style="margin-right:15px;">Log In
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/signup" routerLinkActive="active">Sign Up
+            </a>
+        </li>
+    </ul>
+</ng-template>
+
+<div *ngIf="progress == 100 && showSuccessAlert" class="container" style="margin-top: 10px;">
+    <!-- <h1 class="mt-4 mb-3"></h1> -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">SUCCESS <i aria-hidden="true" class="fa fa-check"></i></h4>
+                <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>New post was added successfully. Click <a href="{{newPostURL}}">here</a>
+                    to view.</p>
+                <hr/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="postFail" class="container" style="margin-top: 10px;">
+    <!-- <h1 class="mt-4 mb-3"></h1> -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">OOPSS!! <i aria-hidden="true" class="fa fa-warning"></i></h4>
+                <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>Some error occured. Please try again.</p>
+                <hr/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- post modal -->
+<div class="modal fade" id="newPost">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form #postForm="ngForm" (ngSubmit)="onNewPost(postForm.value)">
+                    <div class="modal-body">
+                        <input [(ngModel)]="userName" class="form-control" name="username" placeholder="username" required type="hidden"/>
+                        <div class="input-group mb-3">
+                            <textarea class="form-control" name="caption" ngModel placeholder="Post something.." required rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger btn-sm" data-bs-dismiss="modal" id="dismissOnSubmitPost" type="button">
+                            Close
+                        </button>
+                        <button [disabled]="postForm.invalid" class="btn btn-primary btn-sm" type="submit">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- search modal -->
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="search" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <span aria-hidden="true" id="closeSearchModal" style="display: none;">&times;</span>
+            <div class="modal-body">
+                <p class="text-primary text-center">User Search</p>
+                <form #searchUsersForm="ngForm" class="form-signin">
+                    <div class="input-group mb-3">
+                        <input (ngModelChange)="onSearchUsers($event)" class="form-control" name="username" ngModel placeholder="Username..."
+                               required type="text"/>
+                    </div>
+                </form>
+            </div>
+            <div class="">
+                <p *ngIf="searchedUser?.length > 0" class="text-primary text-center">List Of Users Found</p>
+                <div *ngFor="let userSearch of searchedUser" class="list-group">
+                    <a (click)="getSearchUserProfile(userSearch?.username)" class="list-group-item list-group-item-action">
+                        <img alt="{{ userSearch?.fullName }}" class="rounded-circle" src="{{ userHost }}/{{ userSearch?.id }}.png" width="45"/>
+                        {{ userSearch.username }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
